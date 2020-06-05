@@ -1,8 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Search = () => {
-	return <Input autoFocus type="text" placeholder="Transformers" />
+const Search = ({ search, setSearch }) => {
+	return (
+		<Input
+			autoFocus
+			type="text"
+			placeholder="Transformers"
+			value={search}
+			onChange={(e) => setSearch(e.target.value)}
+		/>
+	)
 }
 
 const Input = styled.input`

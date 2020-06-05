@@ -8,13 +8,13 @@ import Search from './Search'
 // Constrants
 const HEADER_HEIGHT = 80
 
-const Header = () => {
+const Header = ({ search, setSearch }) => {
 	return (
 		<Wrapper>
 			<Container>
 				<Content>
 					<Logo src={logo} alt={logoAlt} />
-					<Search />
+					<Search search={search} setSearch={setSearch} />
 				</Content>
 			</Container>
 		</Wrapper>

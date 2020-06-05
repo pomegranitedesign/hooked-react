@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import axios from 'axios'
 import Header from './Header'
 import Movies from './Movies'
-
-const _APIKEY = '75564e0c5c251bf2aa157f35cece994b'
+import MovieModal from './MovieModal'
+import { API_KEY } from '../keys'
 
 const App = () => {
 	const [ movies, setMovies ] = useState([])
 	const [ currentPage, setCurrentPage ] = useState(1)
-
-	const _BASEURL = `https://api.themoviedb.org/3/movie/popular?api_key=${_APIKEY}&language=en-US&page=${currentPage}`
+	const [ search, setSearch ] = useState('')
+	const [ currentMovieID, setCurrentMovieID ] = useState(null)
+	const [ isShown, setIsShown ] = useState(false)
+	const _BASEURL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${currentPage}`
 
 	useEffect(() => {
 		const fetchMovies = async () => {
@@ -21,11 +23,23 @@ const App = () => {
 		fetchMovies()
 	}, [])
 
+	const filteredMovies = movies.filter((movie) =>
+		movie.title.toLowerCase().match(search.toLowerCase())
+	)
 	return (
-		<div>
-			<Header />
-			<Movies movies={movies} />
-		</div>
+		<Fragment>
+			<Header search={search} setSearch={setSearch} />
+			<Movies
+				movies={filteredMovies}
+				setCurrentMovieID={setCurrentMovieID}
+				setIsShown={setIsShown}
+			/>
+			<MovieModal
+				isShown={isShown}
+				setIsShown={setIsShown}
+				currentMovieID={currentMovieID}
+			/>
+		</Fragment>
 	)
 }
 
