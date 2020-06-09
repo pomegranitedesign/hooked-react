@@ -1,18 +1,54 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Sorting = ({ order, setOrder }) => {
+const Sorting = ({ order, setOrder, sortBy, setSortBy }) => {
 	return (
 		<Wrapper>
-			<Button isActive={order === 'asc'} onClick={() => setOrder('asc')}>
-				Ascending
-			</Button>
-			<Button
-				isActive={order === 'desc'}
-				onClick={() => setOrder('desc')}
-			>
-				Descending
-			</Button>
+			<List>
+				<Button
+					isActive={order === 'asc'}
+					onClick={() => setOrder('asc')}
+					style={{
+						borderTopLeftRadius: 3,
+						borderBottomLeftRadius: 3
+					}}
+				>
+					Ascending
+				</Button>
+				<Button
+					isActive={order === 'desc'}
+					onClick={() => setOrder('desc')}
+					style={{
+						borderTopRightRadius: 3,
+						borderBottomRightRadius: 3
+					}}
+				>
+					Descending
+				</Button>
+			</List>
+
+			<List>
+				<Button
+					isActive={sortBy === 'name'}
+					onClick={() => setSortBy('name')}
+					style={{
+						borderTopLeftRadius: 3,
+						borderBottomLeftRadius: 3
+					}}
+				>
+					By Movie Name
+				</Button>
+				<Button
+					isActive={sortBy === 'rating'}
+					onClick={() => setSortBy('rating')}
+					style={{
+						borderTopRightRadius: 3,
+						borderBottomRightRadius: 3
+					}}
+				>
+					By Rating
+				</Button>
+			</List>
 		</Wrapper>
 	)
 }
@@ -31,5 +67,7 @@ const Button = styled.button`
 		border: none;
 	}
 `
+
+const List = styled.ul`margin-top: 20px;`
 
 export default Sorting
