@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
+import createPersistedState from 'use-persisted-state'
 import Header from './Header'
 import Movies from './Movies'
 import MovieModal from './MovieModal'
@@ -9,9 +10,13 @@ import Filters from './Filters'
 import Sorting from './Sorting'
 import Pagination from './Pagination'
 
+// Persisted state
+const usePageState = createPersistedState('currentMoviePage')
+const useMovieState = createPersistedState('currentMovieList')
+
 const App = () => {
-	const [ movies, setMovies ] = useState([])
-	const [ currentPage, setCurrentPage ] = useState(2)
+	const [ movies, setMovies ] = useMovieState([])
+	const [ currentPage, setCurrentPage ] = usePageState(1)
 	const [ search, setSearch ] = useState('')
 	const [ currentMovieID, setCurrentMovieID ] = useState(null)
 	const [ isShown, setIsShown ] = useState(false)
@@ -45,11 +50,14 @@ const App = () => {
 	}
 
 	const formattedMovies = movies
-		.filter(
-			(movie) =>
-				movie.title.toLowerCase().match(search.toLowerCase()) &&
-				movie.adult === isAdult
-		)
+		.filter((movie) => {
+			if (isAdult)
+				return (
+					movie.title.toLowerCase().match(search.toLowerCase()) &&
+					movie.isAdult
+				)
+			else return movie.title.toLowerCase().match(search.toLowerCase())
+		})
 		.sort((a, b) => {
 			if (order === 'asc') {
 				if (sortBy === 'name') return a.title > b.title ? 1 : -1
